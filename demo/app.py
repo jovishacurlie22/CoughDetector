@@ -10,7 +10,6 @@ import tempfile
 import warnings
 warnings.filterwarnings('ignore')
 
-# Load model and feature names
 model = joblib.load('../models/best_lgbm.pkl')
 feature_names = joblib.load('../models/feature_names.pkl')
 explainer = shap.TreeExplainer(model)
@@ -55,64 +54,42 @@ def extract_features(path, sr=22050, n_mfcc=13):
 def predict(audio_path):
     if audio_path is None:
         return "No audio provided.", None
-
     vec = extract_features(audio_path)
     if vec is None:
-        return "Audio too short or unreadable. Please upload a longer clip.", None
-
+        return "Audio too short.", None
     prob = model.predict_proba([vec])[0]
-    covid_prob   = prob[1]
+    covid_prob = prob[1]
     healthy_prob = prob[0]
-
     if covid_prob >= 0.5:
-        label = "⚠️ COVID-19 Likely"
+        label = "COVID-19 Likely"
     else:
-        label = "✅ Healthy Likely"
+        label = "Healthy Likely"
+    result = f"{label} | Healthy: {healthy_prob:.1%} | COVID-19: {covid_prob:.1%}"
 
-    result = f"""### {label}
-
-| Class | Probability |
-|-------|------------|
-| Healthy | {healthy_prob:.1%} |
-| COVID-19 | {covid_prob:.1%} |
-
----
-*AUROC: 0.6179 on holdout. Research demo — not a medical diagnostic tool.*"""
-
-    # SHAP bar plot — saved as image
     shap_vals = explainer.shap_values(vec.reshape(1, -1))
     indices   = np.argsort(np.abs(shap_vals[0]))[-15:]
     top_shap  = shap_vals[0][indices]
     top_names = [feature_names[i] for i in indices]
     colors    = ['tomato' if v > 0 else 'steelblue' for v in top_shap]
-
     fig, ax = plt.subplots(figsize=(9, 6))
     ax.barh(top_names, top_shap, color=colors, alpha=0.85)
     ax.axvline(x=0, color='black', linewidth=0.8)
-    ax.set_xlabel('SHAP value (positive = toward COVID-19)')
+    ax.set_xlabel('SHAP value')
     ax.set_title('Top 15 features driving this prediction')
     plt.tight_layout()
-
-    # Save to temp file and return path
     tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
     plt.savefig(tmp.name, dpi=150, bbox_inches='tight')
     plt.close()
-
     return result, tmp.name
 
 demo = gr.Interface(
     fn=predict,
-    inputs=gr.Audio(type="filepath", label="Upload or record a cough"),
+    inputs=gr.Audio(type="filepath", label="Upload a cough recording"),
     outputs=[
-        gr.Markdown(label="Prediction"),
-        gr.Image(label="Feature attribution (SHAP)", type="filepath")
+        gr.Text(label="Prediction"),
+        gr.Image(label="SHAP explanation", type="filepath")
     ],
-    title="🫁 Cough-based COVID-19 Detector",
-    description="""Upload a cough recording (wav, mp3, ogg) and the model will predict COVID-19 likelihood
-using 190 hand-crafted audio features. Built with LightGBM + SHAP on the COUGHVID dataset.
-
-**⚠️ Research demo only — not a medical diagnostic tool.**""",
-    theme=gr.themes.Soft()
+    title="Cough COVID-19 Detector",
 )
 
 if __name__ == "__main__":
