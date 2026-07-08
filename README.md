@@ -13,7 +13,7 @@ Live demo:https://a5cb702fff7884c490.gradio.live
 | AUROC | 0.6187 ± 0.015 | 0.6179 |
 | Macro F1 | — | 0.5380 |
 
-> AUROC in the 0.60–0.65 range is consistent with published literature on COUGHVID using classical ML ([Orlandic et al., 2021](https://doi.org/10.1016/j.compbiomed.2021.105081)). The value of this project lies in pipeline rigour, not clinical-grade accuracy.
+> The value of this project lies in pipeline rigour, not clinical-grade accuracy.
 
 ---
 
@@ -208,5 +208,8 @@ python app.py
 
 ## References
 
-- Orlandic, L. et al. (2021). The COUGHVID crowdsourcing dataset, a corpus for the study of large-scale cough analysis algorithms. *Scientific Data*, 8, 156.
-- Schuller, B. et al. (2021). COVID-19 and computer audition: An overview on what speech & sound analysis could contribute in the SARS-CoV-2 corona crisis. *Frontiers in Digital Health*.
+## References
+
+- Orlandic, L. et al. (2021). The COUGHVID crowdsourcing dataset, a corpus for the study of large-scale cough analysis algorithms. *Scientific Data*, 8, 156. https://doi.org/10.1038/s41597-021-00937-4
+- Laguarta, J. et al. (2020). COVID-19 Artificial Intelligence Diagnosis Using Only Cough Recordings. *IEEE Open Journal of Engineering in Medicine and Biology*, 1, 275–281.
+- Brown, C. et al. (2020). Exploring Automatic Diagnosis of COVID-19 from Crowdsourced Respiratory Sound Data. *KDD 2020*.
