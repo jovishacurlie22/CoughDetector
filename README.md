@@ -2,7 +2,6 @@
 
 A classical ML pipeline that detects COVID-19 from cough recordings using hand-crafted audio features, trained on the COUGHVID dataset.
 
-Live demo:https://a5cb702fff7884c490.gradio.live
 
 ---
 
