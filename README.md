@@ -207,8 +207,6 @@ python app.py
 
 ## References
 
-## References
-
 - Orlandic, L. et al. (2021). The COUGHVID crowdsourcing dataset, a corpus for the study of large-scale cough analysis algorithms. *Scientific Data*, 8, 156. https://doi.org/10.1038/s41597-021-00937-4
 - Laguarta, J. et al. (2020). COVID-19 Artificial Intelligence Diagnosis Using Only Cough Recordings. *IEEE Open Journal of Engineering in Medicine and Biology*, 1, 275–281.
 - Brown, C. et al. (2020). Exploring Automatic Diagnosis of COVID-19 from Crowdsourced Respiratory Sound Data. *KDD 2020*.
